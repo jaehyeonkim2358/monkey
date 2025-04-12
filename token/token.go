@@ -16,8 +16,15 @@ const (
 	INT   = "INT"   // 12342
 
 	// 연산자
-	ASSIGN = "="
-	PLUS   = "+"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
+
+	LT = "<"
+	GT = ">"
 
 	// 구분자
 	COMMA     = ","
