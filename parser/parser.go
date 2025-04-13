@@ -22,6 +22,18 @@ type (
 	infixParseFn  func(ast.Expression) ast.Expression
 )
 
+// 연산자 우선순위
+const (
+	_ int = iota
+	LOWEST
+	EQUALS      // ==
+	LESSGREATER // < or >
+	SUM         // +
+	PRODUCT     // *
+	PREFIX      // -X or !X
+	CALL        // myFunction(X)
+)
+
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		l:      l,
@@ -71,7 +83,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	case token.RETURN:
 		return p.parseReturnStatement()
 	default:
-		return nil
+		return p.parseExpressionStatement()
 	}
 }
 
@@ -109,6 +121,18 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	return returnStmt
 }
 
+func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
+	stmt := &ast.ExpressionStatement{Token: p.curToken}
+	stmt.Expression = p.parseExpression(LOWEST)
+
+	// 표현식문에 세미콜론(;)은 optional이다.
+	if p.peekTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+
+	return stmt
+}
+
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
@@ -133,4 +157,9 @@ func (p *Parser) registerPrefix(t token.TokenType, fn prefixParseFn) {
 
 func (p *Parser) registerInfix(t token.TokenType, fn infixParseFn) {
 	p.infixParseFns[t] = fn
+}
+
+func (p *Parser) parseExpression(precedence int) ast.Expression {
+	// TODO: implement
+	return nil
 }
