@@ -40,6 +40,9 @@ func New(l *lexer.Lexer) *Parser {
 		errors: []string{},
 	}
 
+	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
+
 	// 토큰을 2개 읽어서 curToken과 peekToken을 세팅
 	p.nextToken()
 	p.nextToken()
@@ -167,4 +170,8 @@ func (p *Parser) parseExpression(_ int) ast.Expression {
 	leftExp := prefix()
 
 	return leftExp
+}
+
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
