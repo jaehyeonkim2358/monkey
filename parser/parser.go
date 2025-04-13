@@ -159,7 +159,12 @@ func (p *Parser) registerInfix(t token.TokenType, fn infixParseFn) {
 	p.infixParseFns[t] = fn
 }
 
-func (p *Parser) parseExpression(precedence int) ast.Expression {
-	// TODO: implement
-	return nil
+func (p *Parser) parseExpression(_ int) ast.Expression {
+	prefix := p.prefixParseFns[p.curToken.Type]
+	if prefix == nil {
+		return nil
+	}
+	leftExp := prefix()
+
+	return leftExp
 }
