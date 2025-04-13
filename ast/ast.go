@@ -33,6 +33,7 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
+// let <identifier> = <expression>;
 type LetStatement struct {
 	Token token.Token // token.LET
 	Name  *Identifier // 변수 바인딩 식별자. (`let x = 1 + 2;` 에서 `x`)
@@ -41,6 +42,15 @@ type LetStatement struct {
 
 func (ls *LetStatement) statementNode()       {}
 func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
+
+// return <expression>;
+type ReturnStatement struct {
+	Token       token.Token // token.RETURN
+	ReturnValue Expression
+}
+
+func (rs *ReturnStatement) statementNode()       {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
 
 type Identifier struct {
 	Token token.Token // token.IDENT
