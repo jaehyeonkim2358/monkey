@@ -12,6 +12,9 @@ type Parser struct {
 	curToken  token.Token  // 현재 토큰
 	peekToken token.Token  // 현재 토큰의 다음 토큰
 	errors    []string
+
+	prefixParseFns map[token.TokenType]prefixParseFn
+	infixParseFns  map[token.TokenType]infixParseFn
 }
 
 type (
