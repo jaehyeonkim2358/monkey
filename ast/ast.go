@@ -52,6 +52,14 @@ type ReturnStatement struct {
 func (rs *ReturnStatement) statementNode()       {}
 func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
 
+type ExpressionStatement struct {
+	Token      token.Token // 표현식의 첫번째 토큰
+	Expression Expression
+}
+
+func (es *ExpressionStatement) statementNode()       {}
+func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
+
 type Identifier struct {
 	Token token.Token // token.IDENT
 	Value string
